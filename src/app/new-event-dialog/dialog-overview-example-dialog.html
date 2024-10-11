@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>New Event</h2>
+<mat-dialog-content>
+  <p><mat-form-field>
+    <mat-label>Event Title</mat-label>
+    <input matInput [(ngModel)]="title" />
+  </mat-form-field></p>
+  <p><mat-form-field>
+    <mat-label>Location</mat-label>
+    <input matInput [(ngModel)]="location" />
+  </mat-form-field></p>
+  <p><mat-form-field>
+    <mat-label>Date</mat-label>
+    <input matInput [(ngModel)]="date" />
+  </mat-form-field></p>
+  <p><mat-form-field>
+    <mat-label>Start</mat-label>
+    <input matInput [(ngModel)]="startTime" />
+  </mat-form-field></p>
+  <p><mat-form-field>
+    <mat-label>End</mat-label>
+    <input matInput [(ngModel)]="endTime" />
+  </mat-form-field></p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="location()" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

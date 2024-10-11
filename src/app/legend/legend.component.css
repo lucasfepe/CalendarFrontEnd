@@ -1,0 +1,50 @@
+legend {
+    margin-left: 1em;
+    background-color: #605DC8;
+    color: #fff;
+    padding: 3px 6px;
+}
+
+input {
+    margin: 0.4rem;
+}
+
+.circleBase {
+    border-radius: 50%;
+
+    margin: 0.5em 0;
+    margin-left: 1em;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+fieldset {
+    margin: 1em;
+    border-color: #8B89E6;
+}
+
+fieldset span {
+    display: inline-block;
+    position: absolute;
+}
+
+.group1 {
+
+    background: #39ac2a;
+}
+
+.group2 {
+
+    background: #ee451b;
+}
+
+.group3 {
+
+    background: #860686;
+}
+
+span {
+    margin-left: 2em;
+    height: 20px;
+}
