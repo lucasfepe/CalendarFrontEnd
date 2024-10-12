@@ -34,7 +34,7 @@ import { LegendComponent } from '../legend/legend.component';
       </full-calendar>
     </section>
   `,
-	styleUrl: './home.component.css'
+	styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent | undefined;

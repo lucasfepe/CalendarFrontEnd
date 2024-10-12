@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './legend.component.html',
-  styleUrl: './legend.component.css'
+  styleUrls: ['./legend.component.css']
 })
 export class LegendComponent {
 

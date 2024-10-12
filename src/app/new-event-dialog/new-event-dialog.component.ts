@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, model, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -13,7 +13,8 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DialogData } from '../dialog-data';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 /**
  * @title Dialog Overview
  */
@@ -26,20 +27,20 @@ import { DialogData } from '../dialog-data';
 })
 export class DialogOverviewExample {
   readonly location = signal('');
-  readonly title = model('');
-  readonly date = model('');
-  readonly startTime = model('');
-  readonly endTime = model('');
+  readonly title = '';
+  readonly date = '';
+  readonly startTime = '';
+  readonly endTime = '';
   readonly dialog = inject(MatDialog);
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       data: {
-        title: this.title(),
+        title: this.title,
         location: this.location(),
-        date: this.date(),
-        startTime: this.startTime(),
-        endTime: this.endTime()
+        date: this.date,
+        startTime: this.startTime,
+        endTime: this.endTime
       },
       disableClose: true
     });
@@ -57,15 +58,18 @@ export class DialogOverviewExample {
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-overview-example-dialog.html',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
     MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatDialogContent,
+    MatDatepickerModule,
+    MatDialogTitle,
+
   ],
 })
 export class DialogOverviewExampleDialog {
