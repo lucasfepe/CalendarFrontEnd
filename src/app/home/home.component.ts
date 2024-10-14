@@ -85,6 +85,7 @@ export class HomeComponent {
 
 			disableClose: true
 		});
+		dialogRef.componentInstance.calendar = this!.calendarComponent;
 
 		dialogRef.afterClosed().subscribe(result => {
 			console.log('The dialog was closed');

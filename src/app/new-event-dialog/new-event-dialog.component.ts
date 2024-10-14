@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, model, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -16,61 +16,7 @@ import { DialogData } from '../dialog-data';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
-// @Component({
-//   selector: 'app-root',
-//   standalone: true,
-//   template: `
-//     <form>
-//       <label>Name
-//         <input type="text" />
-//       </label>
-//       <label>Email
-//         <input type="email" />
-//       </label>
-//       <button type="submit">Submit</button>
-//     </form>
-//   `,
-//   imports: [ReactiveFormsModule],
-// })
-// /**
-//  * @title Dialog Overview
-//  */
-// @Component({
-//   selector: 'dialog-overview-example',
-//   templateUrl: 'dialog-overview-example.html',
-//   standalone: true,
-//   imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule],
-//   changeDetection: ChangeDetectionStrategy.OnPush,
-// })
-// export class DialogOverviewExample {
-//   readonly location = signal('');
-//   readonly title = '';
-//   readonly date = '';
-//   readonly startTime = '';
-//   readonly endTime = '';
-//   readonly dialog = inject(MatDialog);
-
-//   openDialog(): void {
-//     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-//       data: {
-//         title: this.title,
-//         location: this.location(),
-//         date: this.date,
-//         startTime: this.startTime,
-//         endTime: this.endTime
-//       },
-//       disableClose: true
-//     });
-
-//     dialogRef.afterClosed().subscribe(result => {
-//       console.log('The dialog was closed');
-//       if (result !== undefined) {
-//         this.location.set(result);
-//       }
-//     });
-//   }
-// }
-
+import { FullCalendarComponent } from '@fullcalendar/angular';
 @Component({
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-overview-example-dialog.html',
@@ -91,12 +37,7 @@ import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 })
 export class DialogOverviewExampleDialog {
   readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
-  // readonly data = inject<DialogData>(MAT_DIALOG_DATA);
-  // readonly location = model(this.data.location);
-  // readonly title = model(this.data.title);
-  // readonly date = model(this.data.date);
-  // readonly startTime = model(this.data.startTime);
-  // readonly endTime = model(this.data.endTime);
+  @Input() calendar: FullCalendarComponent | undefined = undefined;
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -108,4 +49,27 @@ export class DialogOverviewExampleDialog {
     startTime: new FormControl(''),
     endTime: new FormControl(''),
   });
+  handleSubmit() {
+    //check database to see if event time collides with any other if so alert and ask if sure
+    // else post new event
+    var dateIn = new Date(this.newEventForm.value.date ?? '');
+
+    var dateInstart = new Date(this.newEventForm.value.date ?? '');
+    var dateInend = new Date(this.newEventForm.value.date ?? '');
+    dateInstart.setHours((new Date("1970-01-01T" + this.newEventForm.value.startTime)).getHours());
+    dateInend.setHours((new Date("1970-01-01T" + this.newEventForm.value.endTime)).getHours());
+    var dateStr = dateIn.toLocaleString('en-CA', { timeZone: 'America/Edmonton', hour12: false }).split(',')[0];
+    var startDate = dateInstart.toLocaleString('en-CA', { timeZone: 'America/Edmonton', hour12: false }).replace(',', '');
+    var endDate = dateInend.toLocaleString('en-CA', { timeZone: 'America/Edmonton', hour12: false }).replace(',', '');
+    this.calendar!.getApi().addEvent({
+
+      title: this.newEventForm.value.title ?? '',
+      date: dateStr,
+      start: startDate,
+      end: endDate,
+      color: 'purple',
+      location: this.newEventForm.value.location,
+    });
+    this.dialogRef.close();
+  }
 }
