@@ -10,7 +10,7 @@ import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogOverviewExample } from '../new-event-dialog/new-event-dialog.component';
+import { DialogOverviewExampleDialog } from '../new-event-dialog/new-event-dialog.component';
 import { LegendComponent } from '../legend/legend.component';
 
 
@@ -18,7 +18,7 @@ import { LegendComponent } from '../legend/legend.component';
 	selector: 'app-home',
 	standalone: true,
 	imports: [HousingLocationComponent, CommonModule,
-		FullCalendarModule, MatSlideToggleModule, DialogOverviewExample, LegendComponent],
+		FullCalendarModule, MatSlideToggleModule, LegendComponent],
 	template: `
 
     <section>
@@ -37,8 +37,8 @@ import { LegendComponent } from '../legend/legend.component';
 	styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+	readonly dialog = inject(MatDialog);
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent | undefined;
-	dialog: DialogOverviewExample = new DialogOverviewExample();
 	calendarOptions: CalendarOptions = {
 		headerToolbar: {
 			left: 'prev,next today addEventButton',
@@ -49,7 +49,7 @@ export class HomeComponent {
 
 			addEventButton: {
 				text: 'add event...',
-				click: () => this.dialog.openDialog()
+				click: () => this.openDialog()
 			}
 		},
 		initialView: 'timeGridWeek',
@@ -80,6 +80,17 @@ export class HomeComponent {
 		]
 
 	};
+	openDialog(): void {
+		const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+
+			disableClose: true
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			console.log('The dialog was closed');
+
+		});
+	}
 	someFunction() {
 		let calendarApi = this.calendarComponent!.getApi();
 		calendarApi.next();
