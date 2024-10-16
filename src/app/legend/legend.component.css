@@ -30,21 +30,37 @@ fieldset span {
 }
 
 .group1 {
-
     background: #39ac2a;
 }
 
 .group2 {
-
     background: #ee451b;
 }
 
 .group3 {
-
     background: #860686;
 }
 
 span {
     margin-left: 2em;
     height: 20px;
+}
+
+fieldset {
+    min-width: 130px;
+}
+
+@media (max-width: 1000px) {
+    fieldset {
+        display: flex;
+        width: 500px;
+        padding-bottom: 1em;
+        justify-content: center;
+        margin: auto;
+        margin-bottom: 1em;
+    }
+
+    .circleBase {
+        margin-right: 80px;
+    }
 }

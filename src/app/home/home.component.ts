@@ -3,7 +3,7 @@ import { HousingLocationComponent } from '../housing-location/housing-location.c
 import { CommonModule } from '@angular/common';
 import { HousingLocation } from '../housinglocation';
 import { HousingService } from '../housing.service';
-import { CalendarOptions, EventInput } from '@fullcalendar/core';
+import { CalendarOptions, EventClickArg, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
@@ -12,6 +12,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogOverviewExampleDialog } from '../new-event-dialog/new-event-dialog.component';
 import { LegendComponent } from '../legend/legend.component';
+import { MeetupEvent } from '../meetupevent';
+import { EventDetailsComponent } from '../event-details/event-details.component';
+
 
 
 @Component({
@@ -39,6 +42,17 @@ import { LegendComponent } from '../legend/legend.component';
 export class HomeComponent {
 	readonly dialog = inject(MatDialog);
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent | undefined;
+
+	testEvent: MeetupEvent = {
+		id: 1,
+		location: 'My house',
+		title: 'Test Event',
+		date: new Date(),
+		startTime: new Date(),
+		endTime: new Date()
+
+	}
+
 	calendarOptions: CalendarOptions = {
 		headerToolbar: {
 			left: 'prev,next today addEventButton',
@@ -56,6 +70,7 @@ export class HomeComponent {
 		weekends: true,
 		plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
 		dateClick: (arg) => this.handleDateClick(arg),
+		eventClick: (arg: EventClickArg) => this.eventDetails(arg),
 		select: function (info) {
 			alert('selected ' + info.startStr + ' to ' + info.endStr);
 		},
@@ -68,7 +83,7 @@ export class HomeComponent {
 		events: [
 			{
 				title: 'event 3', date: '2024-10-09', start: '2024-10-09 10:00:00', end: '2024-10-09 12:00:00',
-				color: 'red'
+				color: 'red', location: 'you mom\'s house'
 			},
 			{
 				title: 'event 4', date: '2024-10-09', start: '2024-10-09 10:00:00', end: '2024-10-09 11:00:00',
@@ -80,6 +95,28 @@ export class HomeComponent {
 		]
 
 	};
+	eventDetails(arg: EventClickArg): void {
+
+		const dialogRef = this.dialog.open(EventDetailsComponent, {
+
+			disableClose: false
+		});
+		const ha: Date = arg.event.start as Date;
+		const eventDetails: MeetupEvent = {
+			id: arg.event.extendedProps['id'] ?? 1,
+			title: arg.event.title,
+			location: arg.event.extendedProps['location'],
+			date: arg.event.start as Date,
+			startTime: arg.event.start as Date,
+			endTime: arg.event.end as Date
+		}
+		dialogRef.componentInstance.event = eventDetails;
+
+		dialogRef.afterClosed().subscribe(result => {
+			console.log('The dialog was closed');
+
+		});
+	}
 	openDialog(): void {
 		const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
 

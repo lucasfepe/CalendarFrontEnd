@@ -36,12 +36,10 @@ import { FullCalendarComponent } from '@fullcalendar/angular';
   ],
 })
 export class DialogOverviewExampleDialog {
-  readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
   @Input() calendar: FullCalendarComponent | undefined = undefined;
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+  readonly dialogRef = inject(MatDialogRef<DialogOverviewExampleDialog>);
+
   newEventForm = new FormGroup({
     title: new FormControl(''),
     location: new FormControl(''),
@@ -49,11 +47,13 @@ export class DialogOverviewExampleDialog {
     startTime: new FormControl(''),
     endTime: new FormControl(''),
   });
-  handleSubmit() {
-    //check database to see if event time collides with any other if so alert and ask if sure
-    // else post new event
-    var dateIn = new Date(this.newEventForm.value.date ?? '');
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  handleSubmit() {
+    var dateIn = new Date(this.newEventForm.value.date ?? '');
     var dateInstart = new Date(this.newEventForm.value.date ?? '');
     var dateInend = new Date(this.newEventForm.value.date ?? '');
     dateInstart.setHours((new Date("1970-01-01T" + this.newEventForm.value.startTime)).getHours());
@@ -62,7 +62,6 @@ export class DialogOverviewExampleDialog {
     var startDate = dateInstart.toLocaleString('en-CA', { timeZone: 'America/Edmonton', hour12: false }).replace(',', '');
     var endDate = dateInend.toLocaleString('en-CA', { timeZone: 'America/Edmonton', hour12: false }).replace(',', '');
     this.calendar!.getApi().addEvent({
-
       title: this.newEventForm.value.title ?? '',
       date: dateStr,
       start: startDate,

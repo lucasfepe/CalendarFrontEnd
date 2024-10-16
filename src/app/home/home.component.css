@@ -24,6 +24,16 @@ button {
   border-radius: 8px;
 }
 
+full-calendar {
+  width: 80%;
+  max-width: 1000px;
+  /* margin: auto; */
+}
+
+section {
+  display: flex
+}
+
 @media (min-width: 500px) and (max-width: 768px) {
   .results {
     grid-template-columns: repeat(2, 1fr);
@@ -37,5 +47,16 @@ button {
 @media (max-width: 499px) {
   .results {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1000px) {
+  full-calendar {
+    width: 100%;
+    margin: auto;
+  }
+
+  section {
+    display: block
   }
 }
