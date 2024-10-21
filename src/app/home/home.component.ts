@@ -14,7 +14,7 @@ import { DialogOverviewExampleDialog } from '../new-event-dialog/new-event-dialo
 import { LegendComponent } from '../legend/legend.component';
 import { MeetupEvent } from '../meetupevent';
 import { EventDetailsComponent } from '../event-details/event-details.component';
-
+import { ImplicitLoginService } from '../implicit-login.service';
 
 
 @Component({
@@ -42,7 +42,7 @@ import { EventDetailsComponent } from '../event-details/event-details.component'
 export class HomeComponent {
 	readonly dialog = inject(MatDialog);
 	@ViewChild('calendar') calendarComponent: FullCalendarComponent | undefined;
-
+	readonly implicitLoginService: ImplicitLoginService = inject(ImplicitLoginService);
 	testEvent: MeetupEvent = {
 		id: 1,
 		location: 'My house',
@@ -95,6 +95,14 @@ export class HomeComponent {
 		]
 
 	};
+	login(): void {
+		var res = this.implicitLoginService.login();
+	}
+	ngOnInit() {
+
+		this.login();
+
+	}
 	eventDetails(arg: EventClickArg): void {
 
 		const dialogRef = this.dialog.open(EventDetailsComponent, {
